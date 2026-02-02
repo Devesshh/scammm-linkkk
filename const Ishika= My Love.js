@@ -1,0 +1,1 @@
+const herName = "My Love";
