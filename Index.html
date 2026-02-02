@@ -49,7 +49,7 @@ body {
 h1 { color: #ff4d6d; }
 
 #typeText {
-  min-height: 80px;
+  min-height: 90px;
   font-size: 18px;
 }
 
@@ -73,6 +73,15 @@ button {
   background: #ff4d6d;
   color: white;
   left: 20px;
+  animation: heartbeat 1.2s infinite;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 #no {
@@ -85,7 +94,7 @@ button {
   display: none;
 }
 
-.heart, .firework {
+.heart, .firework, .petal {
   position: absolute;
   pointer-events: none;
 }
@@ -109,6 +118,38 @@ button {
   0% { transform: scale(0); opacity: 1; }
   100% { transform: scale(3); opacity: 0; }
 }
+
+.petal {
+  font-size: 24px;
+  top: -50px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Love popup 💌 */
+.love-note {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.love-box {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  max-width: 300px;
+}
 </style>
 </head>
 
@@ -116,9 +157,15 @@ button {
 
 <div class="fake-url">🔒 https://scammm-linkkkk.com</div>
 
-<audio id="music" loop>
-  <source src=""C:\Users\devesh\Downloads\fawkkk-made-with-Voicemod.mp3"">
-</audio>
+<!-- 🎵 Background Music (Labon Ko – Bhool Bhulaiyaa) -->
+<iframe
+  id="bgMusic"
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/0OGguI0uDfE?enablejsapi=1&loop=1&playlist=0OGguI0uDfE"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
 
 <div class="card" id="card">
   <h1>Hey loveee ❤️</h1>
@@ -133,16 +180,25 @@ button {
 <div class="card celebrate" id="celebrate">
   <h1>💘 SHE SAID YESSS 💘</h1>
   <p>You just made my whole world brighter babbyyy 🌍❤️</p>
-  <p>HAPPY VALENTINE'S DAYYY 🥰</p>
-  <p> I LOVEEE YOUU SO MUCCHHHH </p>
+  <p>HAPPY VALENTINE'S DAY 🥰</p>
+  <p>I LOVEEE YOUU SO MUCCHHH 💖</p>
+</div>
+
+<div class="love-note" id="loveNote">
+  <div class="love-box">
+    <h2>Just for you 💕</h2>
+    <p>
+      You didn’t just say YES…<br>
+      You chose love, smiles, and memories with me ❤️
+    </p>
+    <button onclick="closeLove()">Aww 🥰</button>
+  </div>
 </div>
 
 <script>
-// ✨ CHANGE NAME HERE
 const herName = "My Love";
 
-const message =
-  `Hey ${herName}... 💌
+const message = `Hey ${herName}... 💌
 I’ve been meaning to ask you something very special.
 You make my days better, my smiles wider,
 and my heart happier ❤️
@@ -167,14 +223,24 @@ function moveNo() {
     `translate(${Math.random()*300-150}px, ${Math.random()*150-75}px)`;
 }
 
-// YES celebration 💖
+// YES button 💖
 document.getElementById("yes").onclick = () => {
   document.getElementById("card").style.display = "none";
   document.getElementById("celebrate").style.display = "block";
-  document.getElementById("music").play();
+  playMusic();
   hearts();
   fireworks();
+  petals();
+  setTimeout(showLove, 2000);
 };
+
+function playMusic() {
+  const iframe = document.getElementById("bgMusic").contentWindow;
+  iframe.postMessage(
+    '{"event":"command","func":"playVideo","args":""}',
+    '*'
+  );
+}
 
 function hearts() {
   for (let i = 0; i < 40; i++) {
@@ -183,7 +249,6 @@ function hearts() {
     h.innerHTML = "❤️";
     h.style.left = Math.random()*100+"vw";
     h.style.bottom = "0";
-    h.style.animationDuration = (Math.random()*2+3)+"s";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),5000);
   }
@@ -200,11 +265,27 @@ function fireworks() {
     setTimeout(()=>f.remove(),1400);
   }
 }
+
+function petals() {
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.innerHTML = "🌹";
+    p.style.left = Math.random()*100+"vw";
+    p.style.animationDuration = (Math.random()*3+4)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),7000);
+  }
+}
+
+function showLove() {
+  document.getElementById("loveNote").style.display = "flex";
+}
+
+function closeLove() {
+  document.getElementById("loveNote").style.display = "none";
+}
 </script>
 
 </body>
 </html>
-
-
-
-
